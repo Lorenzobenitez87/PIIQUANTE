@@ -4,9 +4,9 @@
 // On appel le framework express
 require("dotenv").config();
 const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
-const app = express();
 
 // On appel mongoose 
 const mongoose = require('mongoose');
@@ -51,7 +51,7 @@ app.use(bodyParser.json());
 
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
-app.use('images', express.static(path.join(_dirname, 'images')));
+app.use('images', express.static(path.join(__dirname, 'images')));
 
 
 app.get('/api/sauces', (req, res, next) => {
@@ -73,9 +73,9 @@ app.get('/api/sauces', (req, res, next) => {
         {
             _id: 'oeihfzeomoihi',
             userId: 'qsomihvqios',
-            name: 'nom de la sauce',
+            name: 'nom de la sauce 2',
             manufacturer: 'fabricant de la sauce',
-            description: 'Les infos de mon premier objet',
+            description: 'Les infos de mon deuxième objet',
             mainPepper: 'le principal ingrédient épicé de la sauce',
             imageUrl: 'l URL de l image de la sauce téléchargée par l utilisateur',
             heat: 'nombre entre 1 et 10 decrivant la sauce',
