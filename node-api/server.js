@@ -1,3 +1,6 @@
+
+
+
 const http = require('http');
 const app = require('./app')
 
@@ -13,6 +16,7 @@ const normalizePort = val => {
     }
     return false;
 };
+
 
 const port = normalizePort(process.env.PORT || '3000');
 
@@ -58,11 +62,8 @@ server.listen(port);
 const dotenv = require("dotenv");
 dotenv.config();
 
-// const MY_PORT = process.env.PORT;
-// const MY_APP_SECRET = process.env.APP_SECRET;
+const MY_APP_SECRET = process.env.APP_SECRET;
 
-// app.get("/", (req, res) => {
-//     return res.send(MY_APP_SECRET);
-// });
-
-// app.listen(MY_PORT, () => console.log('server started: 3000'));
+app.get("/", (req, res) => {
+    return res.send(MY_APP_SECRET);
+});
