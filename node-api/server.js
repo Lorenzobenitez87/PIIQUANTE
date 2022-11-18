@@ -1,8 +1,9 @@
-
-
-
 const http = require('http');
 const app = require('./app')
+
+// On appel le framework dotenv
+const dotenv = require("dotenv");
+dotenv.config();
 
 // Fonction renvoie un port valide qu'il soit fourni sous forme de numéro ou de chaîne de caractère
 const normalizePort = val => {
@@ -17,9 +18,7 @@ const normalizePort = val => {
     return false;
 };
 
-
 const port = normalizePort(process.env.PORT || '3000');
-
 app.set('port', port);
 
 // Fonction qui recherche les différentes erreurs et les gère de manière appropriée puis l'enregistre sur le server
@@ -58,12 +57,3 @@ server.on('listening', () => {
 server.listen(port);
 
 
-// On appel le framework dotenv
-const dotenv = require("dotenv");
-dotenv.config();
-
-const MY_APP_SECRET = process.env.APP_SECRET;
-
-app.get("/", (req, res) => {
-    return res.send(MY_APP_SECRET);
-});

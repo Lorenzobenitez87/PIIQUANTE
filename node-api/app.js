@@ -1,8 +1,6 @@
-
-
-
 // On appel le framework express
 require("dotenv").config();
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -13,7 +11,10 @@ const mongoose = require('mongoose');
 
 const saucesRoutes = require('./routes/sauces')
 const userRoutes = require('./routes/user');
-const { application } = require("express");
+const helmet = require("helmet")
+
+const mongoSanitize = require('express-mongo-sanitize');
+//const { application } = require("express");
 
 str_connect = 'mongodb+srv://' +
     process.env.BDD_LOGIN
@@ -35,6 +36,15 @@ mongoose.connect(str_connect,
 
 // Express prend toutes les requêtes qui ont comme Content-Type application/json et met à disposition leur body directement sur l'objet req
 app.use(express.json());
+//  Helmet helps to secure Express apps by setting various HTTP headers
+
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+  }));
+  
+//middleware which sanitizes user-supplied data to prevent MongoDB Operator Injection.
+app.use(mongoSanitize());
+
 
 // Ces headers permettent: 
 // - d'accéder à notre API depuis n'importe quelle origine ( '*' ) ;
@@ -49,44 +59,10 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
-app.use('images', express.static(path.join(__dirname, 'images')));
 
-
-app.get('/api/sauces', (req, res, next) => {
-    const sauces = [
-        {
-            _id: 'oeihfzeoi',
-            userId: 'qsomihvqios',
-            name: 'nom de la sauce',
-            manufacturer: 'fabricant de la sauce',
-            description: 'Les infos de mon premier objet',
-            mainPepper: 'le principal ingrédient épicé de la sauce',
-            imageUrl: 'l URL de l image de la sauce téléchargée par l utilisateur',
-            heat: 'nombre entre 1 et 10 decrivant la sauce',
-            likes: 'nombre d utilisateurs qui aiment la sauce',
-            dislikes: 'nombre d utilisateurs qui n aiment pas la sauce',
-            usersLiked: 'tableau des identifiants des utilisateurs qui ont aimé la sauce',
-            usersDisliked: 'tableau des identifiants des utilisateurs qui n ont pas aimé la sauce',
-        },
-        {
-            _id: 'oeihfzeomoihi',
-            userId: 'qsomihvqios',
-            name: 'nom de la sauce 2',
-            manufacturer: 'fabricant de la sauce',
-            description: 'Les infos de mon deuxième objet',
-            mainPepper: 'le principal ingrédient épicé de la sauce',
-            imageUrl: 'l URL de l image de la sauce téléchargée par l utilisateur',
-            heat: 'nombre entre 1 et 10 decrivant la sauce',
-            likes: 'nombre d utilisateurs qui aiment la sauce',
-            dislikes: 'nombre d utilisateurs qui n aiment pas la sauce',
-            usersLiked: 'tableau des identifiants des utilisateurs qui ont aimé la sauce',
-            usersDisliked: 'tableau des identifiants des utilisateurs qui n ont pas aimé la sauce',
-        },
-    ];
-    res.status(200).json(sauces);
-});
 
 // Permet l'acces depuis les autres fichiers
 module.exports = app;
