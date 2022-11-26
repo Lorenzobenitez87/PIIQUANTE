@@ -4,13 +4,17 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 //mask email content
-const MaskData = require("maskdata");//https://www.npmjs.com/package/maskdata
+const MaskData = require('maskdata');//https://www.npmjs.com/package/maskdata
 const emailMask2Options = {
     maskWith: "*", 
     unmaskedStartCharactersBeforeAt: 5,
     unmaskedEndCharactersAfterAt: 2,
     maskAtTheRate: false
 };
+
+// const email = "my.test.email@testEmail.com";
+// const maskedEmail = MaskData.maskEmail2(email, emailMask2Options);
+// console.log(maskedEmail);
 
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
